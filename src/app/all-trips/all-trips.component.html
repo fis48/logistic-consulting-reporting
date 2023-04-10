@@ -1,0 +1,138 @@
+
+<div class="main-report-container">
+
+  <!-- report form container -->
+  <div class="report-form-container">
+    <app-report-form
+      [formTitle]="'All trips'"
+      [onlyDates]="true"
+      [medicalCenters]="medicalCenters"
+      [drivers]="drivers"
+      (sendFormData)="setFormData($event)"
+    ></app-report-form>  
+  </div>
+
+  <!-- report -->
+  <button *ngIf="reportVisible && reportTop" (click)="handleExportPdf()"
+    class="export-pdf-btn">
+    Export to pdf
+  </button>
+
+  <!-- items -->
+  <div class="report-container all-trips" id="report-container">
+    <div *ngIf="reportVisible" class="report-header">
+      <img src="/assets/logo-sacs.png" class="header-logo" alt="logo">
+    </div>
+
+    <div *ngIf="reportTop" class="report-top-container top-all-trips">
+      <div class="col-50">
+        <h2>{{ reportTop.title }}</h2>
+        <div class="line-wrap">
+          <div class="cont-50">
+            <h3>Total number of trips:</h3>
+          </div>
+          <div class="cont-25">
+           <h3>{{ reportTop.total_trips }}</h3>
+          </div>
+          
+          <div class="cont-50">
+            <h3>Total number of completed:</h3>
+          </div>
+          <div class="cont-25">
+            <h3>{{ reportTop.completed.total  }}</h3>
+          </div>
+          <div class="cont-25">
+            <h3>{{ reportTop.completed.percentage  }}</h3>
+          </div>
+  
+          <div class="cont-50">
+            <h3>Total number of cancelled:</h3>
+          </div>
+          <div class="cont-25">
+            <h3>{{ reportTop.cancelled.total  }}</h3>
+          </div>
+          <div class="cont-25">
+            <h3>{{ reportTop.cancelled.percentage }} %</h3>
+          </div>  
+        </div>
+      </div>
+      <div class="col-50 all-dates">
+          <p>Report time out: {{ reportTop.timeout | date:'MM/dd/yy HH:mm a' }}</p>
+          <div class="clear cl10"></div>
+          <div class="clear cl10"></div>
+          <div class="clear cl10"></div>
+          <div class="clear cl10"></div>
+          <p>Beginning date: {{ reportTop.dates.dateIni | date:'MM/dd/yy' }}</p>
+          <p>Ending date: {{ reportTop.dates.dateEnd | date:'MM/dd/yy' }}</p>
+      </div>
+    </div>
+
+    <div *ngFor="let reportItem of reportItems" class="all-items-container">
+      <div class="all-trips-th-row">
+        <div class="cont-50">
+          <p class="p50">
+            Center: {{ reportItem.center_name }}
+          </p>
+          <p class="p25">
+            Driver name
+          </p>
+          <p class="p25">
+            Scheduled: {{ reportItem.scheduled }}
+          </p>
+        </div>
+
+        <div class="cont-25">
+          <p class="p50">
+            Completed:
+          </p>
+          <p class="p25">
+            {{ reportItem.completed.total }}
+          </p>
+          <p class="p25">
+            {{ reportItem.completed.percentage }}%
+          </p>
+        </div>
+
+        <div class="cont-25">
+          <p class="p50">
+            Cancelled:
+          </p>
+          <p class="p25">
+            {{ reportItem.cancelled.total }}
+          </p>
+          <p class="p25">
+            {{ reportItem.cancelled.percentage }}%
+          </p>
+        </div>
+        
+      </div>
+
+      <div *ngFor="let drItem of reportItem.drivers" class="all-trips-td-row">
+        <div class="cont-50">
+          <p class="p50"> </p>
+          <p class="p25">{{ drItem.name }}</p>
+          <p class="p25">{{ drItem.scheduled }}</p>
+        </div>
+
+        <div class="cont-25">
+          <p class="p50"> </p>
+          <p class="p25">{{ drItem.completed.total }}</p>
+          <p class="p25">{{ drItem.completed.percentage }} %</p>
+        </div>
+
+        <div class="cont-25">
+          <p class="p50"> </p>
+          <p class="p25">{{ drItem.cancelled.total }}</p>
+          <p class="p25">{{ drItem.cancelled.percentage }} %</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="html2pdf__page-break">
+      <div class="foot-container">
+      </div>
+    </div>
+
+  </div>
+
+</div>

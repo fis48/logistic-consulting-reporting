@@ -1,0 +1,95 @@
+
+<div class="main-report-container">
+
+  <!-- report form container -->
+  <div class="report-form-container">
+    <app-report-form
+      [formTitle]="'Cancellations'"
+      [medicalCenters]="medicalCenters"
+      [drivers]="drivers"
+      (sendFormData)="setFormData($event)"
+    ></app-report-form>
+
+  </div>
+  <div class="clear cl25"></div>
+
+  <!-- report -->
+  <button *ngIf="reportVisible && reportTrips" (click)="handleExportPdf()"
+    class="export-pdf-btn">
+    Export to pdf
+  </button>
+
+  <div *ngIf="reportVisible && reportTrips" class="report-container" id="report-container">
+    <div class="report-header">
+      <img src="/assets/logo-sacs.png" class="header-logo" alt="logo">
+    </div>
+
+    <!-- report top info -->  
+    <div *ngIf="reportItems && reportItems[0]" class="report-top-container cancellations">
+      <div class="top-col">
+        <p class="p-th">Center:</p>
+        <p>{{ reportItems[0].mc.Name }}</p>
+        <h3 class="type-title">CANCELLATIONS</h3>
+      </div>
+      <div class="top-col right-by-driver">
+        <h2>Route Sheet by Driver</h2>
+        <div class="row-item">
+          <p class="p-th">Date</p>
+          <p>{{ reportItems[0].timeout.date }}</p>
+        </div>
+        <div class="row-item">
+          <p class="p-th">Report Time Out</p>
+          <p>{{ reportItems[0].timeout.time }}</p>
+        </div>
+      </div>
+    </div>
+        
+    <!-- items -->
+    <div class="report-items-container">
+      <div class="items-head-row">
+        <p class="p-th">Trip ID</p>
+        <p class="p-th">App time</p>
+        <p class="p-th name-th">Patient name</p>
+        <p class="p-th location-th">Pickup location</p>
+        <p class="p-th">Special requirements</p>
+        <p class="p-th">Subject</p>
+        <p class="p-th location-th">Destination</p>
+      </div>
+    </div>
+
+    <div *ngFor="let reportItem of reportItems">
+      <div *ngFor="let tripItem of reportItem.trips; let i=index" class="item-container">
+        <p class="p-td">{{ tripItem.id }}</p>
+        <p class="p-td">{{ tripItem.Time }}</p>
+        <p class="p-td name-th">{{ tripItem.FirstName }} {{ tripItem.LastName }}</p>
+        <p class="p-td location-th">{{ tripItem.AddressPatient }}</p>
+        <p class="p-td">{{tripItem.special_requirement}}</p>
+        <p class="p-td">-</p>
+        <p class="p-td location-th">{{ tripItem.AddressDestination }}</p>
+        <p class="p-td phones-td">
+          <span>Home phone:</span> {{ tripItem.PhoneNumber }}
+        </p>
+        <p class="p-td phones-td">
+          <span>Celular phone:</span> {{ tripItem.MobilNumber }}
+        </p>
+        <p class="p-td location-th">
+          <span>Comments:</span> {{ tripItem.notes }}
+        </p>
+        <p class="p-td name-th">
+          <span>Driver:</span> {{ tripItem.Driver }}
+        </p>
+      </div>
+    </div>
+
+    <div class="report-totals">
+      <h2>
+        Total number of trips: {{ totalCancellations }}
+      </h2>
+    </div>
+
+    <div class="html2pdf__page-break">
+      <div class="foot-container">
+      </div>
+    </div>
+  </div>
+</div>

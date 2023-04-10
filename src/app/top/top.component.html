@@ -1,0 +1,29 @@
+
+  <div class="reporting-top">
+    <img src="/assets/logo-sacs.png" alt="Sacs - Scheduling & Control System">
+    <h1 class="top-title">Reporting</h1>
+  </div>
+  
+  <nav class="reporting-nav">
+    <button (click)="setReportType('trips-by-driver')">
+      Trips by Driver
+    </button>
+    <button (click)="setReportType('cancellations')">
+      Cancellations
+    </button>
+    <button (click)="setReportType('all-trips')">
+      All trips
+    </button>
+    <button (click)="setReportType('kpi')">
+      Key performance indicators
+    </button>
+    <button (click)="setReportType('monitoring')">
+      Monitoring status
+    </button>
+    <button (click)="setReportType('patient')">
+      Patient history
+    </button>
+    <button (click)="setReportType('clear')">
+      Clear
+    </button>
+  </nav>

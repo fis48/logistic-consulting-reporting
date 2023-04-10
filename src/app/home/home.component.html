@@ -1,0 +1,60 @@
+
+<div class="main-container">
+  <app-top
+    (sendReportType)="setReportType($event)"
+  ></app-top>
+
+  <!-- trips by driver 
+      [api_token]="api_token"
+  -->
+  <div *ngIf="actualReportType === 'trips-by-driver'" class="main-report-container">
+    <app-trips-by-driver 
+      [drivers]="drivers"
+      [medicalCenters]="medicalCenters"
+    ></app-trips-by-driver>
+  </div>
+
+  <!-- cancellations -->
+  <div *ngIf="actualReportType === 'cancellations'" class="main-report-container">
+    <app-cancellations
+      [api_token]="api_token"
+      [drivers]="drivers"
+      [medicalCenters]="medicalCenters"
+    ></app-cancellations>
+  </div>
+
+  <!-- all trips -->
+  <div *ngIf="actualReportType === 'all-trips'" class="main-report-container">
+    <app-all-trips
+      [api_token]="api_token"
+      [drivers]="drivers"
+      [medicalCenters]="medicalCenters"
+    ></app-all-trips>
+  </div>
+
+    <!-- kpi -->
+    <div *ngIf="actualReportType === 'kpi'" class="main-report-container">
+      <app-kpi
+        [api_token]="api_token"
+        [drivers]="drivers"
+        [medicalCenters]="medicalCenters"
+      ></app-kpi>
+    </div>
+
+    <!-- monitoring -->
+    <div *ngIf="actualReportType === 'monitoring'" class="main-report-container">
+      <app-monitoring
+        [api_token]="api_token"
+        [drivers]="drivers"
+        [medicalCenters]="medicalCenters"
+      ></app-monitoring>
+    </div>
+    
+    <!-- monitoring -->
+    <div *ngIf="actualReportType === 'patient'" class="main-report-container">
+      <app-patient-hystory>
+        
+      </app-patient-hystory>
+
+    </div>
+</div>

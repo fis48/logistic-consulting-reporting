@@ -1,0 +1,64 @@
+
+<h2 *ngIf="!patientDates" class="report-name">
+  {{ formTitle }}
+</h2>
+
+<div class="clear cl25"></div>
+
+<div class="report-form-container">
+  <span class="dates-note">    
+    If you do not choose any date, <strong>today's report will be shown</strong>. 
+    If you want data from different dates, please click the <strong>"Select report dates"</strong> button.
+  </span>
+  <div class="clear cl10"></div>
+
+  <button (click)="showDates()">
+    Select report dates
+  </button>
+  <div class="clear cl25"></div>
+
+  <!-- dates -->
+  <div *ngIf="datesVisible" class="dates-container"> 
+    <div class="field-container">
+      <label for="dateIni">Initial date</label>
+      <input type="date" name="dateIni" #dateIni="ngModel" [(ngModel)]="strDateIni" >
+    </div>
+    <div class="field-container">
+      <label for="dateEnd">Final date</label>
+      <input type="date" name="dateEnd" #dateIni="ngModel" [(ngModel)]="strDateEnd" >
+    </div>
+    <div class="clear cl10"></div>
+  </div>
+
+  <!-- medical center -->
+  <div *ngIf="medicalDriversSelectorsVisible" class="field-container">
+    <label for="driver">Medical center</label>
+    <select name="medical_center" #medical_center="ngModel" 
+      [(ngModel)]="selectedMedicalCenterId"
+      (change)="handleMedicalCenterFilter($event)" >
+      <option value="">Select a medical center</option>
+      <option *ngFor="let mCenter of medicalCenters" value="{{ mCenter.IdMedicalC }}">
+        {{ mCenter.Name }}
+      </option>
+    </select>
+  </div>
+
+  <!-- driver 
+  <div *ngIf="medicalDriversSelectorsVisible && driverSelector"  class="field-container">
+    <label for="driver">Driver</label>
+    <select name="driver" #driver="ngModel" [(ngModel)]="driverId">
+      <option value="">All</option>
+      <option *ngFor="let driver of selectorDrivers" value="{{ driver.Id }}">
+        {{ driver.Driver }}
+      </option>
+    </select>
+  </div>
+  -->
+  <div class="clear"></div>
+
+
+  <!-- <button *ngIf="strDateIni && strDateEnd" (click)="getReport()"> -->
+  <button (click)="sendForm()" class="see-report-btn">
+    Show report
+  </button>
+</div>

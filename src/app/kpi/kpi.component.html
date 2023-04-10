@@ -1,0 +1,125 @@
+
+<div class="main-report-container">
+
+  <!-- report form container -->
+  <div class="report-form-container">
+    <app-report-form
+      [formTitle]="'Key performance indicators'"
+      [onlyDates]="false"
+      [medicalCenters]="medicalCenters"
+      [drivers]="drivers"
+      [driverSelector]="false"
+      (sendFormData)="setFormData($event)"
+    ></app-report-form>  
+  </div>
+
+
+  <button *ngIf="reportVisible && reportTop" (click)="handleExportPdf()"
+    class="export-pdf-btn">
+    Export to pdf
+  </button>
+
+  <div class="report-container all-trips" id="report-container">
+    <div *ngIf="reportVisible" class="report-header">
+      <h1>ON TIME PERFORMANCE REPORTS</h1>
+      <img src="/assets/logo-sacs.png" class="header-logo" alt="logo">
+    </div>
+
+    <div *ngIf="reportTop" class="report-top-container top-kpi">
+      <h2>{{ reportTop.title }}</h2>
+      <div class="row">
+        <p>{{ reportTop.medical_center }}</p>
+        <p>{{ reportTop.timeout | date:'MM/dd/yy h:mm a' }}</p>
+        <p>Route date: {{ reportTop.dates.dateIni | date:'dd-MMM-yy' }}</p>
+      </div>
+      <div class="row biggy">
+        <p>Total trips: {{ reportTop.total_trips }}</p>
+        <p>Completed: {{ reportTop.completed.total }}</p>
+        <p>Completed: {{ reportTop.completed.percentage }}</p>
+      </div>
+    </div>
+
+    <!-- to center chart  -->
+    <div *ngIf="chartData" class="chart-container">
+      <h3>Trips to Center</h3>
+      <google-chart
+        [type]="'BarChart'"
+        [data]="chartData"
+        [columns]="chartColumns"
+        [options]="chartOptions"
+      ></google-chart>
+    </div>
+
+    <!-- to home chart -->
+    <div *ngIf="chartBData" class="chart-container">
+      <h3>Trips to Home</h3>
+      <google-chart
+        [type]="'BarChart'"
+        [data]="chartBData"
+        [columns]="chartColumns"
+        [options]="chartOptions"
+      ></google-chart>
+    </div>
+
+    <!-- to center items -->
+    <div class="row">
+      <h3>To Center Completed</h3>
+    </div>
+    <div class="kpi-items-table">
+      <p class="kpi-th">
+        <span>Member name</span>
+        <span>Appointment date</span>
+        <span>On board</span>
+        <span>Drop off</span>
+        <span>On time</span>
+        <span>Driver</span>
+      </p>
+      <p *ngFor="let item of reportItems">
+        <span>{{ item.patient_name }}</span>
+        <span>{{ item.appointment_date }}</span>
+        <span>{{ item.ob }}</span>
+        <span>{{ item.dp }}</span>
+        <span>{{ item.on_time }}</span>
+        <span>{{ item.driver }}</span>
+        <span *ngIf="item.driver == null" >Same as pickup</span>
+      </p>
+      <div *ngIf="reportTop" class="row table-bottom">
+        <p>
+          {{ reportTop.dates.dateIni | date:'MMMM dd, YYYY' }}
+        </p>
+        <p>Total: {{ reportTop.total_trips }}</p>
+        <p>On time: {{ reportTop.onTime.on_time.total }} - 
+          {{ reportTop.onTime.on_time.percentage }} %</p>
+        <p>Late: {{ reportTop.onTime.late.total }} - 
+          {{ reportTop.onTime.late.percentage }} %</p>
+      </div>  
+    </div>
+
+    <!-- to home items -->
+    <div class="row">
+      <h3>To Home Completed</h3>
+    </div>
+    <div class="kpi-items-table">
+      <p class="kpi-th">
+        <span>Member name</span>
+        <span>On board</span>
+        <span>Drop off</span>
+        <span>Driver</span>
+      </p>
+      <p *ngFor="let rItem of reportReturnItems">
+        <span>{{ rItem.patient_name }}</span>
+        <span>{{ rItem.ob | date: "HH:mm a, MM-dd-YYYY" }}</span>
+        <span>{{ rItem.dp | date: "HH:mm a, MM-dd-YYYY" }}</span>
+        <span>{{ rItem.driver }}</span>
+      </p>
+
+    </div>
+    <div class="clear cl25"></div>
+    <div class="clear cl25"></div>
+    <div class="clear cl25"></div>
+    
+    <div class="html2pdf__page-break">
+      <div class="foot-container">
+      </div>
+    </div>    
+</div>

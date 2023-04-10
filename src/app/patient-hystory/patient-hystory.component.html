@@ -1,0 +1,98 @@
+
+<div class="main-report-container">
+  <h2>Patient History report</h2>
+
+  <div class="search-container">
+    <!-- search -->
+    <div class="field-container patient">
+     <label for="patientName">Patient name</label>
+     <input 
+       id="patient-name"
+       name="patient-name"
+       [(ngModel)] = searchStr
+       type="text"
+       (keyup)="searchPatient()"
+     >
+   </div>
+ 
+    <!-- report form container -->
+    <div class="selected-patient">
+      <p>Selected patient:</p>
+      <h3 *ngIf="reportPatient">{{ reportPatient.Names }}</h3>
+      <h4 *ngIf="!reportPatient">Select a patient for the report.</h4>
+    </div>
+  </div>
+
+  <div *ngIf="reportPatient" class="report-form-container">
+    <app-report-form
+      [formTitle]="'Patients history'"
+      [onlyDates]="true"
+      [patientDates]="true"
+      [patient]="reportPatient"
+      (sendFormData)="setFormData($event)"
+    ></app-report-form>  
+  </div>
+  <div class="clear cl25"></div>
+
+  <!-- report result -->
+  <div *ngIf="reportVisible && reportTop" class="report-container all-trips" 
+    id="report-container">
+    <button *ngIf="patientTrips.length > 0" (click)="handleExportPdf()"
+      class="export-pdf-btn">
+      Export to pdf
+    </button>
+    <div class="clear cl25"></div>
+
+    <div class="report-header">
+      <img src="/assets/logo-sacs.png" class="header-logo" alt="logo">
+    </div>
+
+    <div *ngIf="reportTop" class="report-top-container">
+      <h2>{{ reportTop.title }}</h2>
+    </div>
+
+    <p *ngIf="patientTrips && patientTrips.length === 0">
+      There's no results for the patient and dates requested.
+    </p>
+    <div *ngFor="let trip of patientTrips" class="patient-container" >
+      <div class="full patient-title r-border">
+        {{ trip.LastName }}, {{ trip.FirstName }}
+      </div>
+      <div class="th-div app-date">APP.DATE</div>
+      <div class="td-div trip-date">{{ trip.Date }}</div>
+      <div class="th-div app-time">APP.TIME</div>
+      <div class="td-div trip-time r-border">{{ trip.Time }}</div>
+      <div class="th-div serv-order">SRV.ORDER</div>
+      <div class="td-div trip-id">
+        {{ trip.id }}<span *ngIf="trip.tripType === 'A'">PICKUP</span><span *ngIf="trip.tripType === 'B'">RETURN</span>
+      </div>
+      <div class="th-div on-board">On Board</div>
+      <div class="td-div trip-ob">{{ trip.OB }}</div>
+      <div class="th-div drop-off">Drop Off</div>
+      <div class="td-div trip-rp">{{ trip.RP }}</div>
+      <div class="th-div cancelled">Cancelled</div>
+      <div class="td-div trip-cd r-border">{{ trip.CD }}</div>
+      <div class="th-div pickup-location">Pickup Loc.</div>
+      <div class="td-div trip-pick">{{ trip.AddressPatient }}</div>
+      <div class="th-div drop-location">Dropoff Loc.</div>
+      <div class="td-div trip-drop r-border">{{ trip.AddressDestination }}</div>
+      <div class="th-div notes">Notes</div>
+      <div class="td-div trip-notes r-border">{{ trip.notes }}</div>
+      <div class="th-div driver">Driver</div>
+      <div class="td-div trip-driver r-border">{{ trip.Driver }}</div>
+    </div>
+    <div class="clear cl25"></div>
+    <div class="clear cl25"></div>
+  </div>
+
+  <!-- patients -->
+  <div class="patients-list">
+    <h3>Patients</h3>
+    <div *ngFor="let patient of searchPatients" class="patients-row" 
+      (click)="setReportPatient(patient)">
+      <p>{{ patient.Names }}</p>
+    </div>
+  </div>
+  <div class="clear cl25"></div>
+  <div class="clear cl25"></div>
+</div>

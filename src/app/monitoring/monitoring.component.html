@@ -1,0 +1,124 @@
+
+<div class="main-report-container">
+
+  <!-- trip type  -->
+  <button (click)="setTripType('A')"
+    [ngClass]="{ 'button-selected': tripTypeSelected === 'A' }"
+  >
+    Trips to center
+  </button>
+  <button (click)="setTripType('B')"
+    [ngClass]="{ 'button-selected': tripTypeSelected === 'B' }"
+  >
+    Trips to home
+  </button>
+
+  <!-- report form container -->
+  <div *ngIf="formVisible" class="report-form-container">
+    <app-report-form
+      [formTitle]="reportTop.title"
+      [onlyDates]="false"
+      [medicalCenters]="medicalCenters"
+      [drivers]="drivers"
+      [driverSelector]="false"
+      (sendFormData)="setFormData($event)"
+    ></app-report-form>  
+  </div>
+
+  <!-- report -->
+  <button *ngIf="reportVisible && reportTop" (click)="handleExportPdf()"
+    class="export-pdf-btn">
+    Export to pdf
+  </button>
+
+  <!-- report -->
+  <div *ngIf="reportTop"
+    class="report-container all-trips" id="report-container">
+    <div *ngIf="reportVisible" class="report-header">
+      <h1>ON TIME PERFORMANCE REPORTS</h1>
+      <img src="/assets/logo-sacs.png" class="header-logo" alt="logo">
+    </div>
+
+    <div *ngIf="reportTop" class="report-top-container top-monitoring-trips">
+      <h2>{{ reportTop.title }}</h2>
+      <h3>{{ reportTop.medical_center }}</h3>
+      <div class="row">
+        <p>Route date: {{ reportTop.date | date:'MMMM/dd, YYYY' }}</p>
+        <p>Total: {{ reportTop.total_trips }}</p>
+        <p>{{ reportTop.timeout | date:'MM/dd/yy HH:mm a' }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="reportItems" class="col-list">
+      <h4>{{ reportItems.pending.title }}</h4>
+      <h5>
+        Total: {{ reportItems.pending.total }} - {{ reportItems.pending.percentage }}
+      </h5>
+      <div class="row">
+        <strong>Patient name</strong>
+        <strong>Driver</strong>
+      </div>
+      <div *ngFor="let pend of reportItems.pending.trips" class="row">
+        <p>
+          {{ pend.FirstName }} {{ pend.LastName }}
+        </p>
+        <p>
+          {{ pend.Driver }}          
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="reportItems" class="col-list">
+      <h4>{{ reportItems.onBoard.title }}</h4>
+      <h5>
+        Total: {{ reportItems.onBoard.total }} - {{ reportItems.onBoard.percentage }}
+      </h5>
+      <div class="row">
+        <strong>Patient name</strong>
+        <strong>Driver</strong>
+      </div>
+      <div  *ngFor="let pend of reportItems.onBoard.trips" class="row">
+        <p>{{ pend.FirstName }} {{ pend.LastName }}</p>
+        <p>{{ pend.Driver }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="reportItems" class="col-list">
+      <h4>{{ reportItems.completed.title }}</h4>
+      <h5>
+        Total: {{ reportItems.completed.total }} - {{ reportItems.completed.percentage }}
+      </h5>
+      <div class="row">
+        <strong>Patient name</strong>
+        <strong>Driver</strong>
+      </div>
+      <div *ngFor="let pend of reportItems.completed.trips" class="row">
+        <p>{{ pend.FirstName }} {{ pend.LastName }}</p>
+        <p>{{ pend.Driver }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="reportItems" class="col-list">
+      <h4>{{ reportItems.canceled.title }}</h4>
+      <h5>
+        Total: {{ reportItems.canceled.total }} - {{ reportItems.canceled.percentage }}
+      </h5>
+      <div class="row">
+        <strong>Patient name</strong>
+        <strong>Driver</strong>
+      </div>
+      <div *ngFor="let pend of reportItems.canceled.trips" class="row">
+        <p>{{ pend.FirstName }} {{ pend.LastName }}</p>
+        <p>{{ pend.Driver }}</p>
+      </div>
+    </div>
+    <div class="clear cl25"></div>
+    <div class="clear cl25"></div>
+    <div class="clear cl25"></div>
+
+    <div class="html2pdf__page-break">
+      <div class="foot-container">
+      </div>
+    </div>
+  </div>
+</div>

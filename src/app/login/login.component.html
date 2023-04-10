@@ -1,0 +1,23 @@
+
+<div class="main-container">
+  <div class="form-container login">
+    <div class="brand-container">
+      <img src="/assets/logo-sacs.png" alt="Main logo">
+      <!-- email -->
+      <div class="field-container">
+        <label for="email">Email</label>
+        <input type="text" name="email" #email="ngModel" [(ngModel)]="loginModel.email" />
+      </div>
+      <!-- pass -->
+      <div class="field-container">
+        <label for="pass">Password</label>
+        <input type="password" name="pass" #pass="ngModel" [(ngModel)]="loginModel.pass" />
+      </div>
+
+      <button (click)="handleLogin()" class="login-btn" >
+        Log in
+      </button>
+
+    </div>
+  </div>
+</div>
